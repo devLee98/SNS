@@ -7,21 +7,26 @@ type UseInfinitePostDataParams = {
   initialPosts: Post[];
   initialNextCursor: number | null;
   userId: string;
+  authorId?: string;
 };
 
 export default function useInfinitePostData({
   initialPosts,
   initialNextCursor,
   userId,
+  authorId,
 }: UseInfinitePostDataParams) {
   const queryClient = useQueryClient();
   return useInfiniteQuery({
-    queryKey: QUERY_KEYS.post.list,
+    queryKey: !authorId
+      ? QUERY_KEYS.post.list
+      : QUERY_KEYS.post.authorList(authorId),
     queryFn: async ({ pageParam }: { pageParam: number | null }) => {
       const data = await fetchPostsClient({
         cursor: pageParam,
         limit: 5,
         userId,
+        authorId,
       });
       data.posts.forEach((post) => {
         queryClient.setQueryData(QUERY_KEYS.post.byId(post.id), post);
@@ -44,5 +49,6 @@ export default function useInfinitePostData({
       pageParams: [null as number | null],
     },
     staleTime: Infinity,
+    refetchOnMount: "always",
   });
 }

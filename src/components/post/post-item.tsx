@@ -7,6 +7,7 @@ import {
 import { usePostById } from "@/hooks/queries/use-post-by-id";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import Fallback from "../fallback";
 import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
@@ -31,13 +32,15 @@ export default function PostItem({
     <div className="flex flex-col gap-4 border-b pb-8">
       <div className="flex justify-between">
         <div className="flex items-start gap-4">
-          <Image
-            src={post.author.avatar_url || "/default-avatar.png"}
-            alt=""
-            width={40}
-            height={40}
-            className="h-10 w-10 rounded-full object-cover"
-          />
+          <Link href={`/profile/${post.author.id}`}>
+            <Image
+              src={post.author.avatar_url || "/default-avatar.png"}
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover"
+            />
+          </Link>
           <div>
             <div className="font-bold hover:underline">
               {post.author.nickname}

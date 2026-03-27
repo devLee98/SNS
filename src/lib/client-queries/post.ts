@@ -19,10 +19,12 @@ export async function fetchPostsClient({
   cursor,
   limit = PAGE_SIZE,
   userId,
+  authorId,
 }: {
   cursor: number | null;
   limit: number;
   userId: string;
+  authorId?: string;
 }) {
   const supabase = createClient();
   let query = supabase
@@ -31,6 +33,10 @@ export async function fetchPostsClient({
     .eq("myLiked.user_id", userId)
     .order("id", { ascending: false })
     .limit(limit + 1);
+
+  if (authorId) {
+    query = query.eq("author_id", authorId);
+  }
 
   if (cursor !== null) {
     query = query.lt("id", cursor);
