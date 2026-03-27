@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import Providers from "./provider";
+import ProfileButton from "@/components/header/profile-button";
 
 export default function RootLayout({
   children,
@@ -27,12 +28,7 @@ export default function RootLayout({
                   <div className="hover:bg-muted cursor-pointer rounded-full p-2">
                     <SunIcon />
                   </div>
-                  <Image
-                    src={"/default-avatar.png"}
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
+                  <ProfileButton />
                 </div>
               </div>
             </header>

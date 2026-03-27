@@ -6,6 +6,12 @@ import { getRandomNickname } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+export async function signOutAction() {
+  const supabase = createClient(await cookies());
+  await supabase.auth.signOut();
+  redirect("/");
+}
+
 export async function signUpAction(formData: FormData) {
   const email = String(formData.get("email") ?? "")
     .trim()
