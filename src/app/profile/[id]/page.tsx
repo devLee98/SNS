@@ -25,7 +25,7 @@ export default async function ProfilePage({
   });
   return (
     <div className="flex flex-col gap-10">
-      <ProfileInfo {...profile} />
+      <ProfileInfo {...profile} userId={userId!.id} />
       <div className="border-b"></div>
       <PostFeedClient
         initialPosts={posts}
