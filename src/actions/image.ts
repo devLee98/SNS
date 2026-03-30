@@ -29,7 +29,9 @@ export async function deleteImageAction(filePath: string) {
   const { data, error: fetchFilesError } = await supabase.storage
     .from("uploads")
     .list(filePath);
-  if (fetchFilesError) throw new Error(fetchFilesError.message);
+
+  if (!data || data.length === 0) return;
+  if (fetchFilesError) throw new Error(fetchFilesError);
 
   const { error } = await supabase.storage
     .from("uploads")

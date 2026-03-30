@@ -1,4 +1,5 @@
 import { createWithdImagesAction, updatePostAction } from "@/actions/post";
+import ProfileButton from "@/components/header/profile-button";
 import AlertModal from "@/components/modal/alert-modal";
 import PostEditModal from "@/components/modal/post-edit-modal";
 import { SunIcon } from "lucide-react";
@@ -6,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import Providers from "./provider";
+import ProfileModal from "@/components/modal/profile-modal";
 
 export default function RootLayout({
   children,
@@ -27,12 +29,7 @@ export default function RootLayout({
                   <div className="hover:bg-muted cursor-pointer rounded-full p-2">
                     <SunIcon />
                   </div>
-                  <Image
-                    src={"/default-avatar.png"}
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
+                  <ProfileButton />
                 </div>
               </div>
             </header>
@@ -48,6 +45,7 @@ export default function RootLayout({
             updatePostAction={updatePostAction}
           />
           <AlertModal />
+          <ProfileModal />
           <div id="modal-root" />
         </Providers>
       </body>

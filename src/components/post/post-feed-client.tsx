@@ -14,17 +14,19 @@ type Props = {
   initialPosts: Post[];
   initialNextCursor: number | null;
   userId: string;
+  authorId?: string;
 };
 
 export default function PostFeedClient({
   initialPosts,
   initialNextCursor,
   userId,
+  authorId,
 }: Props) {
   const queryClient = useQueryClient();
   const { ref, inView } = useInView();
   const { data, fetchNextPage, isFetchingNextPage, error, hasNextPage } =
-    useInfinitePostData({ initialPosts, initialNextCursor, userId });
+    useInfinitePostData({ initialPosts, initialNextCursor, userId, authorId });
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
