@@ -41,9 +41,9 @@ export default async function PostDetailPage({
         initialPost={initialPost}
       />
       <div className="text-xl font-bold">댓글</div>
-      <CommentEditor postId={postId} />
+      <CommentEditor type="CREATE" postId={postId} />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <CommentList postId={postId} />
+        <CommentList postId={postId} userId={user.id} />
       </HydrationBoundary>
     </div>
   );

@@ -18,3 +18,21 @@ export async function createCommentAction({
   if (error) throw new Error(error.message);
   return data;
 }
+
+export async function updateCommentAction({
+  content,
+  id,
+}: {
+  content: string;
+  id: number;
+}) {
+  const supabase = createClient(await cookies());
+  const { data, error } = await supabase
+    .from("comment")
+    .update({ content })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw new Error(error.message);
+  return data;
+}
