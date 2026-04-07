@@ -1,14 +1,18 @@
+"use client";
+
 import { deleteImageAction } from "@/actions/image";
 import { deletePostAction } from "@/actions/post";
 import { useOpenAlertModal } from "@/app/store/alert-modal";
 import { QUERY_KEYS } from "@/lib/constants";
 import { Post } from "@/lib/types";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
 export default function DeleteButton({ post }: { post: Post }) {
   const queryClient = useQueryClient();
   const openAlertModal = useOpenAlertModal();
+  const router = useRouter();
   const handleDeleteClick = async () => {
     openAlertModal({
       title: "게시글 삭제",
@@ -20,6 +24,11 @@ export default function DeleteButton({ post }: { post: Post }) {
           await deleteImageAction(`${post.author.id}/${post.id}`);
         }
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.post.list });
+
+        const pathname = window.location.pathname;
+        if (pathname.startsWith(`/post/${post.id}`)) {
+          router.replace("/");
+        }
       },
     });
   };

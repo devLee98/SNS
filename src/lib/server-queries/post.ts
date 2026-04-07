@@ -50,3 +50,15 @@ export async function fetchPostsServer({
 
   return { posts, nextCursor };
 }
+
+export async function fetchPostByIdServer(postId: number): Promise<Post> {
+  const supabase = createClient(await cookies());
+  const { data, error } = await supabase
+    .from("post")
+    .select("*, author: profile!author_id(*), myLiked: like!left(id,user_id)")
+    .eq("id", postId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return toPostWithIsLiked(data as RawPost);
+}

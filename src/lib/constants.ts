@@ -5,4 +5,8 @@ export const QUERY_KEYS = {
     authorList: (authorId: string) => ["post", "authorList", authorId],
     byId: (postId: number) => ["post", "byId", postId],
   },
+  comment: {
+    all: ["comments"],
+    list: (postId: number) => ["comment", "list", postId],
+  },
 };

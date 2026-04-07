@@ -1,10 +1,13 @@
-﻿import Loader from "@/components/loader";
+﻿"use client";
+
+import Loader from "@/components/loader";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { usePostById } from "@/hooks/queries/use-post-by-id";
+import type { Post } from "@/lib/types";
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,20 +19,26 @@ import LikePostButton from "./like-post-button";
 export default function PostItem({
   postId,
   userId,
+  type = "FEED",
+  initialPost,
 }: {
   postId: number;
   userId: string;
+  type?: "FEED" | "DETAIL";
+  initialPost?: Post;
 }) {
   const {
     data: post,
     isPending,
     error,
-  } = usePostById({ postId, type: "FEED" });
+  } = usePostById({ postId, type, initialData: initialPost });
   if (isPending) return <Loader />;
   if (error) return <Fallback />;
 
   return (
-    <div className="flex flex-col gap-4 border-b pb-8">
+    <div
+      className={`flex flex-col gap-4 pb-8 ${type === "FEED" && "border-b"}`}
+    >
       <div className="flex justify-between">
         <div className="flex items-start gap-4">
           <Link href={`/profile/${post.author.id}`}>
@@ -58,9 +67,17 @@ export default function PostItem({
       </div>
 
       <div className="flex cursor-pointer flex-col gap-5">
-        <div className="wrap-break-words line-clamp-2 whitespace-pre-wrap">
-          {post.content}
-        </div>
+        {type === "FEED" ? (
+          <Link href={`/post/${post.id}`}>
+            <div className="wrap-break-words line-clamp-2 whitespace-pre-wrap">
+              {post.content}
+            </div>
+          </Link>
+        ) : (
+          <div className="wrap-break-words whitespace-pre-wrap">
+            {post.content}
+          </div>
+        )}
 
         <Carousel>
           <CarouselContent>
@@ -87,11 +104,14 @@ export default function PostItem({
           likeCount={post.like_count}
           isLiked={post.isLiked}
         />
-
-        <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border p-2 px-4 text-sm">
-          <MessageCircle className="h-4 w-4" />
-          <span>댓글 달기</span>
-        </div>
+        {type === "FEED" && (
+          <Link href={`/post/${post.id}`}>
+            <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border p-2 px-4 text-sm">
+              <MessageCircle className="h-4 w-4" />
+              <span>댓글 달기</span>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );

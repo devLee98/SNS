@@ -3,6 +3,9 @@
 export type PostEntity = Database["public"]["Tables"]["post"]["Row"];
 
 export type ProfileEntity = Database["public"]["Tables"]["profile"]["Row"];
+
+export type CommentEntity = Database["public"]["Tables"]["comment"]["Row"];
+
 export type EditableProfile = Pick<
   ProfileEntity,
   "id" | "nickname" | "bio" | "avatar_url"
@@ -13,6 +16,9 @@ export type Post = PostEntity & {
   isLiked: boolean;
 };
 
+export type Comment = CommentEntity & {
+  author: ProfileEntity;
+};
 export type UseMutationCallback = {
   onSuccess?: () => void;
   onError?: (error: Error) => void;
